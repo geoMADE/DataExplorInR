@@ -134,22 +134,23 @@ $(document).ready(function () {
 data &lt;- read.table(file=&quot;F:/UNIVERSITY OF LEEDS SUBMISSIONS/synthesised data/rmarkdown/chicago_burglary.csv&quot;, sep=&quot;,&quot;,head=T)
 data &lt;-cbind(data$x, data$y, data$date2)
 colnames(data)&lt;-c(&quot;x&quot;,&quot;y&quot;,&quot;t&quot;)
-head(data)</code></pre>
-<pre><code>          x       y t
-[1,] 448825 4625519 1
-[2,] 448147 4628044 1
-[3,] 448705 4626416 1
-[4,] 448480 4631249 1
-[5,] 452875 4623956 1
-[6,] 453208 4622713 1</code></pre>
+dat &lt;-as.data.frame(data)
+head(dat)</code></pre>
+<pre><code>       x       y t
+1 448825 4625519 1
+2 448147 4628044 1
+3 448705 4626416 1
+4 448480 4631249 1
+5 452875 4623956 1
+6 453208 4622713 1</code></pre>
 <p>Where “1” in column 3 corresponds to the earliest date of the dataset (i.e. 01/03/2011)</p>
 <p><strong>create a table of spatial and temporal threshold</strong></p>
 <pre class="r"><code>#100 metre interval spatial neighbourhooods
-s_thres &lt;- c(100, 200, 300, 400, 500) 
-
+#s_thres &lt;- c(100, 200, 300, 400, 500) 
+s_thres &lt;- c(100, 200)
 #1-day band temporal neighbourhooods
-t_thres &lt;- c(1, 2, 3, 4, 5, 6, 7) 
-
+#t_thres &lt;- c(1, 2, 3, 4, 5, 6, 7) 
+t_thres &lt;- c(1, 2)
 #--------------------------------------------------------------
 #create a table to hold the result
 #--------------------------------------------------------------
@@ -169,15 +170,172 @@ for(g in 2:length(t_thres)){ #g&lt;-2
 
 colnames(result_Table) &lt;- col_N
 rownames(result_Table) &lt;- row_N</code></pre>
-<p><strong>previewing the result table</strong></p>
+<p><strong>Previewing the result table</strong></p>
 <pre class="r"><code>print(result_Table)</code></pre>
-<pre><code>##     100-200 200-300 300-400 400-500
-## 1-2       0       0       0       0
-## 2-3       0       0       0       0
-## 3-4       0       0       0       0
-## 4-5       0       0       0       0
-## 5-6       0       0       0       0
-## 6-7       0       0       0       0</code></pre>
+<pre><code>##     100-200
+## 1-2       0</code></pre>
+<p><strong>Calculating the observed knox statistic</strong></p>
+<pre class="r"><code>for(ss in 2:length(s_thres)){ #ss=2
+
+    for(tt in 2:length(t_thres)){ #tt=2
+
+b&lt;-s_thres[ss-1]  
+c&lt;-s_thres[ss]  
+
+d&lt;-t_thres[tt-1]    
+e&lt;-t_thres[tt]  
+
+#getting the start time for the entire process
+Start.time &lt;- Sys.time()
+
+#-------------------------------------
+#function to calculate the pairwise spatial distance
+#-------------------------------------
+#variable to store the distance
+take_dist &lt;- NULL
+
+for(w in 1:nrow(dat)){#w&lt;-1
+    
+    M &lt;- cbind(dat$x[w],dat$y[w], dat$x,dat$y)
+        dist_cal &lt;- apply(M, 1, function(x)  sqrt((x[1]-x[3])^2 + (x[2]-x[4])^2) )
+    take_dist &lt;- rbind(take_dist,dist_cal)
+    }
+
+#changing it to a matrix
+sdis &lt;- matrix(take_dist,,nrow(dat))
+
+#changing the lower part of the distance matrix to a very large number, so that they don't count in the calculation
+sdis[lower.tri(sdis)] &lt;- 1000000
+diag(sdis) &lt;- 1000000
+#-------------------------------------
+
+
+#-------------------------------------
+#to calculate the pairwise temporal distance matrix
+#-------------------------------------
+
+time &lt;- dat$t  #
+n &lt;- length(time)
+
+#create a matrix to store the result
+tdis&lt;-matrix(0,n,n)
+
+for (i in 1:n){
+   for (j in 1:n){
+     tdis[i,j]&lt;- abs( time[i] - time[j])
+   }
+}
+
+#changing the lower part of the temporal matrix to a large number so that they don't count
+tdis[lower.tri(tdis)] &lt;- 1000000
+diag(tdis) &lt;- 1000000
+
+#set the number of replications to use for pvalue calculation
+
+Nrep&lt;-99
+
+ktmon&lt;-1:(Nrep+1)
+
+as&lt;-matrix(0,nrow(sdis),nrow(sdis))
+
+as&lt;-sdis
+as[which(sdis&lt;=b) ] &lt;-0
+as[which(sdis&gt;c) ] &lt;-0
+as[which(as!=0)] &lt;- 1
+
+at&lt;-tdis
+at[which(tdis&lt;=d) ] &lt;-0
+at[which(tdis&gt;e) ] &lt;-0
+at[which(at!=0)] &lt;- 1
+
+diag(as) &lt;- 0  # 
+diag(at) &lt;- 0  # 
+
+s1&lt;-0
+for(i in 1:n){
+   for (j in 1:n){
+   s1&lt;-s1+as[i,j] * at[i,j]
+    }
+}
+
+#this is the observed statistics
+obst &lt;- s1/2
+
+
+#-----------------------------------
+# Start the Monte carlo process
+#-----------------------------------
+
+for(k in 1:Nrep){ #111111111111
+
+#randomising the time attribute
+timeR&lt;-sample(time)
+
+tdis&lt;-matrix(0,n,n)
+
+tdis &lt;- do.call(cbind, lapply(timeR, function(x) abs(x-timeR)))
+
+
+at&lt;-tdis
+at[which(tdis&lt;=d) ] &lt;-0
+at[which(tdis&gt;e) ] &lt;-0
+at[which(at!=0)] &lt;- 1
+
+#diag(as) &lt;- 0
+diag(at) &lt;- 0
+
+s1 &lt;- sum(as*at)
+ 
+#storing the expected statistics
+ktmon[k] &lt;- s1/2
+
+} #end of simulation
+
+#-----------------------------------
+#calculating the pvalue by comparing the 'observed statistic' with the 'expected statistics'
+#-----------------------------------
+
+ktmon[Nrep+1]&lt;-obst
+r&lt;-length(ktmon[ktmon&gt;=obst])
+p&lt;-r/(Nrep+1)
+list(Knox.T=obst , Freq=ktmon, Simulated.p.value=p)
+
+#add the result here
+#------------------------------------------
+result_Table[(tt-1), (ss-1)] &lt;- p
+#------------------------------------------
+
+#-----------------------------------
+#getting the end time for the entire process
+
+End.time &lt;- Sys.time()
+comp_Time &lt;- End.time - Start.time 
+flush.console()
+print(comp_Time)
+print(&quot;     &quot;)
+print(&quot;     &quot;)
+print(&quot;     &quot;)
+print(result_Table)
+print(&quot;     &quot;)
+print(&quot;     &quot;)
+print(&quot;     &quot;)
+
+print(&quot;still updating the table........&quot;)
+
+    } #close temporal 
+
+} #close spatial</code></pre>
+<pre><code>## Time difference of 7.024077 mins
+## [1] &quot;     &quot;
+## [1] &quot;     &quot;
+## [1] &quot;     &quot;
+##     100-200
+## 1-2    0.03
+## [1] &quot;     &quot;
+## [1] &quot;     &quot;
+## [1] &quot;     &quot;
+## [1] &quot;still updating the table........&quot;</code></pre>
+<p>Each cell in the result table is filled with its corresponding pvalues (Note, this process may takes some times if the dataset is very large!).</p>
 
 
 
