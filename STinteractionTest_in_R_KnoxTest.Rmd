@@ -133,7 +133,7 @@ diag(tdis) <- 1000000
 
 #set the number of replications to use for pvalue calculation
 
-Nrep<-999
+Nrep<-99
 
 ktmon<-1:(Nrep+1)
 
