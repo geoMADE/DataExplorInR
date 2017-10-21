@@ -18,7 +18,7 @@ Given a spatial neighbourhood, $\delta$ defined from $\delta_1$ to $\delta_2$, a
 $$n_{\delta,\tau}=\frac{1}{2}{\sum_{i=1}^{n}}{\sum_{j=1}^{n-1}}X_{ij}Y_{ij}$$ where $$X_{ij}=\{_{0, ~otherwise}^{1, if ~event ~j ~falls ~within ~\delta ~of ~i}$$ $$Y_{ij}=\{_{0, ~otherwise}^{1, if ~event ~j ~falls ~within ~\tau ~of ~i}$$
 The $pvalue$ of the observed $n_{\delta,\tau}$ can be computed by comparing the latter with a list of $expected_{\delta,\tau}$ generated under the assumption of no space-time interactions (null distribution); each realised by randomising the time attribute of the dataset while keeping the locations constant. Usually, 999 null distribution is used. The $pvalue$ is calculated as:
 $$pvalue={1-{\frac{n_{exp}}{n_s+1}}}$$ 
-where $n_e$ is the number of $expected_{\delta,\tau}$ exceeded by the $n_{\delta,\tau}$, and $n_2$ is the total number of iteration (e.g. 999). 
+where $n_{exp}$ is the number of $expected_{\delta,\tau}$ exceeded by the $n_{\delta,\tau}$, and $n_2$ is the total number of iteration (e.g. 999). 
 
 In crime application the space-time interaction is tested over multiple combinations of spatial and temporal neighbourhoods.
 
