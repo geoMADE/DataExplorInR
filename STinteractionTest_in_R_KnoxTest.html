@@ -311,30 +311,17 @@ result_Table[(tt-1), (ss-1)] &lt;- p
 End.time &lt;- Sys.time()
 comp_Time &lt;- End.time - Start.time 
 flush.console()
-print(comp_Time)
-print(&quot;     &quot;)
-print(&quot;     &quot;)
-print(&quot;     &quot;)
-print(result_Table)
-print(&quot;     &quot;)
-print(&quot;     &quot;)
-print(&quot;     &quot;)
 
-print(&quot;still updating the table........&quot;)
+print(paste(&quot;time taken to fill cell:&quot;, tt-1,&quot;,&quot;, ss-1 ))
 
     } #close temporal 
 
 } #close spatial</code></pre>
-<pre><code>## Time difference of 7.024077 mins
-## [1] &quot;     &quot;
-## [1] &quot;     &quot;
-## [1] &quot;     &quot;
-##     100-200
-## 1-2    0.03
-## [1] &quot;     &quot;
-## [1] &quot;     &quot;
-## [1] &quot;     &quot;
-## [1] &quot;still updating the table........&quot;</code></pre>
+<pre><code>## [1] &quot;time taken to fill cell: 1 , 1&quot;</code></pre>
+<pre class="r"><code>#the result
+print(result_Table)</code></pre>
+<pre><code>##     100-200
+## 1-2    0.03</code></pre>
 <p>Each cell in the result table is filled with its corresponding pvalues (Note, this process may takes some times if the dataset is very large!).</p>
 
 
