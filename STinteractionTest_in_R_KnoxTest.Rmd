@@ -78,6 +78,8 @@ for(ss in 2:length(s_thres)){ #ss=2
 
 	for(tt in 2:length(t_thres)){ #tt=2
 
+  Start.time <- Sys.time()
+  
 b<-s_thres[ss-1]  
 c<-s_thres[ss]  
 
@@ -211,7 +213,7 @@ End.time <- Sys.time()
 comp_Time <- End.time - Start.time 
 flush.console()
 
-print(paste("time taken to fill cell:", tt-1,",", ss-1 ))
+print(paste("time taken to fill cell:", tt-1,",", ss-1, ": ")); print(comp_Time )
 
 	} #close temporal 
 
