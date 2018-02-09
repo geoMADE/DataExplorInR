@@ -85,7 +85,7 @@ An STPP is $2^{nd}-order$ intensity reweighted stationary and isotropic if its i
 Of interest is to investigate whether the conditional intensity $\lambda(s,t)$ can be expressed as
 
 $$\lambda(s,t)=m(s)\mu(t)$$
-where $m$ is a fixed non-negative functino and $\mu$ is a non-negative preditable process. If this holds we call the process separable with respect to the mark $s$. 
+where $m$ is a fixed non-negative function and $\mu$ is a non-negative preditable process. If this holds, we call the process separable with respect to the mark $s$. 
 
 A stationary STPP is $2^{nd}$-order separable if the covariance density, $\gamma(u,v)=\gamma_s(u)\gamma_t(v)$
 
@@ -132,8 +132,9 @@ where $w_{ij}$ and $v_{ij}$ are the spatial and temporal edge correction factors
 The 'dataset' [here]("\F:\\UNIVERSITY OF LEEDS SUBMISSIONS\synthesised data\rmarkdown\chicago_burglary.csv") is the burglary crime incidents of South Chicago area of the United States between March 1 2011 and January 6 2012. The was downloaded from the official website of [City of Chicago](https://data.cityofchicago.org/Public-Safety/Crimes-2001-to-present-Map/c4ep-ee5m). The dataset contains a three-column matrix of spatial locations and reported times of occurrence. 
 
 ```{r comment=NA}
+
 #Visualising the dataset
-data <- read.table(file="F:/UNIVERSITY OF LEEDS SUBMISSIONS/synthesised data/rmarkdown/chicago_burglary.csv", sep=",",head=T)
+data <- read.table(file="E:/UNIVERSITY OF LEEDS SUBMISSIONS/synthesised data/rmarkdown/chicago_burglary.csv", sep=",",head=T)
 data <-cbind(data$x, data$y, data$date2)
 colnames(data)<-c("x","y","t")
 head(data)
@@ -162,7 +163,7 @@ library(rgeos)
 
 ```{r comment=NA, echo=FALSE}
 #import boundary coordinates
-bound_area <-  read.table(file="F:/UNIVERSITY OF LEEDS SUBMISSIONS/synthesised data/rmarkdown/bound_coords.csv", sep=",",head=T)
+bound_area <-  read.table(file="E:/UNIVERSITY OF LEEDS SUBMISSIONS/synthesised data/rmarkdown/bound_coords.csv", sep=",",head=T)
 bound_area <-cbind(bound_area[,1], bound_area[,2])
 colnames(bound_area) <-c("x","y")
 ##head(bound_area)
@@ -207,9 +208,9 @@ To assess the data for evidence of spatio-temporal clustering, we can follow com
 by comparing the estimator Kb(u, v) with estimates calculated for simulations under the
 null hypothesis that the underlying process is an inhomogeneous Poisson process (see Section
 3.1). We then compare the data with simulations of a Poisson process with intensity
-??^(s, t) = m(s)µ(t).The top right panel of Figure 3 shows comparison between Kb(u, v)?????u2v
+??^(s, t) = m(s)?(t).The top right panel of Figure 3 shows comparison between Kb(u, v)?????u2v
 and tolerance envelopes indicating spatio-temporal clustering (grey shading). It indicates
 spatio-temporal clustering at small temporal distances v < 10 days and spatial distances
 u < 5 kilometers. This corresponds to the contour plot of the pair correlation function in
 Figure 3, where values greater than one indicate clustering. The FMD data-set has been
-further analyzed in Møller and Ghorbani (2012).
+further analyzed in M?ller and Ghorbani (2012).
