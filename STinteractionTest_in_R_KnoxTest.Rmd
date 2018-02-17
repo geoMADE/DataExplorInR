@@ -37,7 +37,7 @@ head(dat)
 Where "1" in column 3 corresponds to the earliest date of the dataset (i.e. 01/03/2011)
 
 
-**create a table of spatial and temporal threshold**
+** Create a table of spatial and temporal threshold**
 ```{r}
 #100 metre interval spatial neighbourhooods
 s_thres <- c(100, 200, 300, 400, 500) 
@@ -64,13 +64,13 @@ colnames(result_Table) <- col_N
 rownames(result_Table) <- row_N
 
 ```
-**Previewing the result table**
+** Previewing the result table**
 
 ```{r}
 print(result_Table)
 ```
 
-**Calculating the observed knox statistic**
+** Calculating the observed knox statistic**
 
 ```{r}
 
