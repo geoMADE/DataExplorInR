@@ -1,6 +1,6 @@
 ---
 title: "Space time interaction test in R using the Knox Test"
-author: "geoMADE"
+author: "Monsuru Adepeju"
 date: "21 October 2017"
 output: html_document
 ---
@@ -9,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-The Knox test for R users
+The Knox Statistics for R users
 
 Originally developed to detect space-time interaction in disease events [(Knox 1964)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1058931/), the Knox test has been widely applied to crime data to reveal the repeat and near-repeat patterns [(Johnson and Bowers, 2004)](https://academic.oup.com/bjc/article-abstract/44/1/55/380644). Theoretically, the Knox test examines whether there are more observed pairs, $n$, of events within a defined spatio-temporal neighbourhood, than would be expected on the basis of chance. The neighbourhood is defined through measuring from every individual event, a critical spatial distance $(\delta)$ and a temporal distance $(\tau)$, along the spatial and temporal dimensions, respectively. For each pair of spatial and temporal distances, the closeness of all points $j$ from a reference $i$ can be examined. This is then repeated for every single points across the entire study area and finally added together in order to derive the Knox test statistic. 
 
@@ -224,4 +224,4 @@ print(result_Table)
 
 ```
 
-Each cell in the result table is filled with its corresponding pvalues (Note, this process may takes some times if the dataset is very large!). 
+Each cell (in the result table) is filled with its corresponding pvalues (Note, this process may takes some times if the dataset is very large!). 
