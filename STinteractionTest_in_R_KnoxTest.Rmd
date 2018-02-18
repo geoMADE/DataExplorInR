@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 The Knox Statistics for R users
 
-Originally developed to detect space-time interaction in disease events [(Knox 1964)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1058931/), the Knox test has been widely applied to crime data to reveal the repeat and near-repeat patterns [(Johnson and Bowers, 2004)](https://academic.oup.com/bjc/article-abstract/44/1/55/380644). Theoretically, the Knox test examines whether there are more observed pairs, $n$, of events within a defined spatio-temporal neighbourhood, than would be expected on the basis of chance. The neighbourhood is defined through measuring from every individual event, a critical spatial distance $(\delta)$ and a temporal distance $(\tau)$, along the spatial and temporal dimensions, respectively. For each pair of spatial and temporal distances, the closeness of all points $j$ from a reference $i$ can be examined. This is then repeated for every single points across the entire study area and finally added together in order to derive the Knox test statistic. 
+Originally developed to detect space-time interaction in disease events [(Knox 1964)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1058931/), the Knox test has been widely applied to crime data to reveal the repeat and near-repeat patterns [(Johnson and Bowers, 2004)](https://academic.oup.com/bjc/article-abstract/44/1/55/380644). Theoretically, the Knox test examines whether there are more observed pairs, $n$, of events within a defined spatio-temporal neighbourhood, than would be expected on the basis of chance. The neighbourhood is defined through measuring from every individual event, a critical spatial distance $(\delta)$ and a temporal distance $(\tau)$, along the spatial and temporal dimensions, respectively. For each pair of spatial and temporal distances, the closeness of all points $j$ from a reference point $i$ can be examined. This process is then repeated for every points across the entire study area and finally added together in order to derive the Knox statistic. 
 
 Given a spatial neighbourhood, $\delta$ defined from $\delta_1$ to $\delta_2$, and temporal neighbourhood, $\tau$ definied from $\tau_1$ to $\tau_2$, the Knox statistic, $n$, is computed as:
 
@@ -34,15 +34,17 @@ dat <-as.data.frame(data)
 head(dat)
 ```    
 
-Where "1" in column 3 corresponds to the earliest date of the dataset (i.e. 01/03/2011)
+Where "1" in column 3 corresponds to the earliest record of the dataset (i.e. 01/03/2011)
 
 
 ** Create a table of spatial and temporal threshold**
+
 ```{r}
 #100 metre interval spatial neighbourhooods
 s_thres <- c(100, 200, 300, 400, 500) 
 #1-day band temporal neighbourhooods
 t_thres <- c(1, 2, 3, 4, 5, 6, 7) 
+
 #--------------------------------------------------------------
 #create a table to hold the result
 #--------------------------------------------------------------
@@ -109,7 +111,6 @@ sdis <- matrix(take_dist,,nrow(dat))
 sdis[lower.tri(sdis)] <- 1000000
 diag(sdis) <- 1000000
 #-------------------------------------
-
 
 #-------------------------------------
 #to calculate the pairwise temporal distance matrix
